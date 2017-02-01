@@ -5,14 +5,15 @@ import seedu.addressbook.storage.StorageFile.*;
 
 import seedu.addressbook.commands.*;
 import seedu.addressbook.data.AddressBook;
+import seedu.addressbook.data.exception.FileDeletedException;
 import seedu.addressbook.parser.Parser;
 import seedu.addressbook.storage.StorageFile;
 import seedu.addressbook.ui.TextUi;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 
 /**
  * Entry point of the Address Book application.
@@ -78,15 +79,32 @@ public class Main {
 
     /** Reads the user command and executes it, until the user issues the exit command.  */
     private void runCommandLoopUntilExitCommand() {
-        Command command;
+        Command command = null;
         do {
-            String userCommandText = ui.getUserCommand();
-            command = new Parser().parseCommand(userCommandText);
-            CommandResult result = executeCommand(command);
-            recordResult(result);
-            ui.showResultToUser(result);
-
+        	try {
+                String userCommandText = ui.getUserCommand();
+                checkStorageFileExistence();
+                command = new Parser().parseCommand(userCommandText);
+                CommandResult result = executeCommand(command);
+                recordResult(result);
+                ui.showResultToUser(result);		
+        	} catch (FileDeletedException e) {
+        		System.out.println(e.getMessage());
+        		System.exit(1);
+        	}
         } while (!ExitCommand.isExit(command));
+    }
+    
+    /**
+     * Checks whether directory file was deleted during execution
+     * @throws FileDeletedException
+     */
+    private void checkStorageFileExistence() throws FileDeletedException {
+    	
+    	if (!(new File(storage.getPath())).exists()) {
+    		throw new FileDeletedException();
+    	};
+    	
     }
 
     /** Updates the {@link #lastShownList} if the result contains a list of Persons. */
