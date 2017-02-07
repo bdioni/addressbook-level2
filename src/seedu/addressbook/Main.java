@@ -1,6 +1,12 @@
 package seedu.addressbook;
 
+import seedu.addressbook.data.person.Address;
+import seedu.addressbook.data.person.Email;
+import seedu.addressbook.data.person.Name;
+import seedu.addressbook.data.person.Person;
+import seedu.addressbook.data.person.Phone;
 import seedu.addressbook.data.person.ReadOnlyPerson;
+import seedu.addressbook.data.tag.UniqueTagList;
 import seedu.addressbook.storage.StorageFile.*;
 
 import seedu.addressbook.commands.*;
@@ -37,6 +43,7 @@ public class Main {
 
     /** Runs the program until termination.  */
     public void run(String[] launchArgs) {
+    	
         start(launchArgs);
         runCommandLoopUntilExitCommand();
         exit();

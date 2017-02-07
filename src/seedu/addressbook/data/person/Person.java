@@ -58,6 +58,16 @@ public class Person implements ReadOnlyPerson {
     public UniqueTagList getTags() {
         return new UniqueTagList(tags);
     }
+    
+    public String getPrintableString(Printable... printables) {
+    	String concatenatedStrings = "";
+    	
+    	for (Printable p: printables) {
+    		concatenatedStrings += p.getPrintableString();    		
+    	}
+    	
+    	return concatenatedStrings;
+    }
 
     /**
      * Replaces this person's tags with the tags in the argument tag list.
